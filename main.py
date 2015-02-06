@@ -8,11 +8,11 @@ rtconfigurator.register("ticket_types.yaml")
 
 incident = rtconfigurator.Incident()
 
-print(incident.f)
+logging.debug(incident.f)
 
 incident.f = 100
 
-print(incident.f)
+logging.debug(incident.f)
 
-print(str(rtconfigurator.Ticket))
-print(str(rtconfigurator.TicketRegistry))
+logging.debug(str(rtconfigurator.Ticket))
+logging.debug(str(rtconfigurator.TicketRegistry))

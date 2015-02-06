@@ -15,14 +15,14 @@ class TicketRegistry(type):
 			g[name] = cls
 			logger.debug(name + " added successfully.")
 		# Remove base classes
-		cls.registry -= set(bases)
+		#cls.registry -= set(bases)
 		
 	def __iter__(cls):
 		return iter(cls.registry)
 	
 	def __str__(cls):
-		if cls in cls.registry:
-			return cls.__name__
+		# TODO:  Write an output that shows the tree hierarchy of classes
+		# and subclasses
 		return cls.__name__ + ":" + ",".join([sc.__name__ for sc in cls])
 
 class Ticket(object, metaclass = TicketRegistry):
@@ -35,4 +35,10 @@ def register(config_file):
 		for ticket in ticket_types:
 			logger.debug("About to add " + str(ticket))
 			ticket_name, ticket_dict = ticket
-			type(ticket_name, (Ticket,), ticket_dict)
+			logging.debug(ticket_dict)
+			if 'parent' in ticket_dict:
+				parent_name = ticket_dict.pop('parent')
+				parent_class = globals()[parent_name]
+				type(ticket_name, (parent_class, ), ticket_dict)
+			else:
+				type(ticket_name, (Ticket,), ticket_dict)
